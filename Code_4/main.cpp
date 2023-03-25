@@ -1,114 +1,50 @@
 #include <iostream>
 #include <string>
-#include <array>
+#include <fstream>
 using namespace std;
-
-template <size_t N> class superlong // Шаблонный класс
+int main()
 {
-private:
-    static constexpr size_t SIZE = N / 32 + (N % 32 != 0);
-    array<uint32_t, N / 32 + (N % 32 != 0)> value;
-    static string toHex(uint32_t u);
-    string toHex();
-public:
-    superlong():value(
-    {
-      
-    }) {}
-    superlong(const array<uint32_t, N / 32 + (N % 32 != 0)>& v):value(v) {}
-    superlong(const string & s);
-    superlong<N>& operator=(const superlong<N>& s);
-    superlong<N> operator+(const superlong<N>& s)const;
-    template <size_t X>
-    friend ostream& operator<< (ostream& stream, superlong<X>& s);
-};
-
-template <size_t N> // Конструктор инициализации строкой
-superlong<N>::superlong(const string& s)
-{
-    // Проверка на принадлежность к 16ричным
-    int len = s.length();
-    string Alfa = "0123456789abcdef";
-    try {
-        for (int i = 1; i<len; i++) {
-            if (Alfa.find(s[i]) == string::npos) {
-                throw invalid_argument("");
-            }
+    string path = "/home/student/file2.txt";
+    ifstream fin;
+    string x;
+    string s1;
+    fin.open(path);
+    if (!fin.is_open()) {
+        cout<<"Ошибка чтения "<<endl;
+    } else {
+        cout<<"Файл найден и открыт! \n";
+        cout<<"Содержимое вторго файла (откуда читается): \n";
+        while (!fin.eof()) {
+            s1=x;
+            x= "";
+            getline(fin, x);
+            cout<<x<<endl;
         }
-    } catch (invalid_argument) {
-        cerr << "Invalid_argument" << endl;
-        exit(1);
     }
-    value= {0};
-    int i = 0;
-    auto ptr_2 = s.end();
-    auto ptr_b = s.begin();
-    while (ptr_b != ptr_2) {
-        auto ptr_1 = ptr_2 - 8;
-        if (ptr_1 < ptr_b)
-            ptr_1 = ptr_b;
-        value[i] = stoul(string(ptr_1,ptr_2),0,16);
-        ptr_2 = ptr_1;
-        i++;
+    string pytb = "/home/student/file1.txt";
+    ofstream fout;
+    fout.open(pytb, ofstream::app);
+    if (!fout.is_open()) {
+        cout<<"Ошибка чтения"<<endl;
+    } else {
+        fout<<s1;
     }
-}
-
-template <size_t N> // Перегруженный оператор присваивания
-superlong<N>& superlong<N>::operator=(const superlong<N>& s)
-{
-    value = s.value;
-    return *this;
-}
-
-template <size_t N> // Перегруженный оператор сложения
-superlong<N> superlong<N>::operator+(const superlong<N>& s)const
-{
-    superlong<N> sum;
-    uint32_t CF=0;
-    for (size_t i=0; i<SIZE; i++) {
-        sum.value[i] = CF + value[i] + s.value[i];
-        if (sum.value[i]<value[i])
-            CF = 1;
-        else
-            CF = 0;
+    fout.close();
+    ifstream f;
+    string y;
+    f.open(pytb);
+    if (!f.is_open()) {
+        cout<<"Ошибка чтения "<<endl;
+    } else {
+        cout<<"Файл найден и открыт! "<<endl;
+        cout<<"Содержимое первого файла (куда передалось содержимое файла 2): "<<endl;
+        while (!f.eof()) {
+            y= "";
+            getline(f, y);
+            cout<<y<<endl;
+        }
+        fin.close();
+        f.close();
+        return 0;
     }
-    return sum;
-}
-
-template <size_t N> // Статический метод предстваления 32х раз.числа в виде 16ричных цифр
-string superlong<N>::toHex(uint32_t u)
-{
-    const char d[]="0123456789abcdef";
-    std::string s;
-    for (int i=0; i<8; i++) {
-        s = d[u & 0xf]+s;
-        u >>=4;
-    }
-    return s;
-}
-
-template <size_t N> // Метод пркдставления длинного числа в виде строки 16х цифр
-string superlong<N>::toHex()
-{
-    string s;
-    for (auto e:value)
-        s=superlong<N>::toHex(e) + s;
-    return s;
-}
-
-template <size_t X> // Перегруженный опертор вывода, выводящий длинное число в 16ричном виде
-ostream& operator<<(std::ostream& stream, superlong<X>& s)
-{
-    stream<<s.toHex();
-    return stream;
-}
-
-int main(int argc, char **argv)
-{
-    const size_t SZ = 512;
-    superlong<SZ> num1("abc");
-    superlong<SZ> num2("abw"); // w не является 16ричной цифрой
-    cout<<num1<<endl;
-    cout<<num2<<endl;
-    return 0;
 }
