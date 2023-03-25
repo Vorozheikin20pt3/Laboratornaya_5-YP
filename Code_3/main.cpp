@@ -1,39 +1,33 @@
 #include <iostream>
+#include <fstream>
 #include <iomanip>
+#include <string>
 using namespace std;
 
-template <class T>
-class DoubleBox
-{
-private:
-    T first;
-    T second;
-public:
-DoubleBox() : first(0), second(0) {} // конвструктор по дефолту
-void setFunkc(T p,T v)
-{
-    first = p;
-    second = v;
-}
-void getFunck()
-{
-    cout<<"Вы ввели "<<first<<" и "<<second<<endl;
-}
-DoubleBox(const T* s) //конструктор инициализации
-{
-    cout<<s<<endl;
-    
-}
-};
 int main()
 {
-    setlocale(LC_ALL, "Russian");
-    DoubleBox <double> znachenie;
-    cout<<"Введите десятичное и целое числа: "<<endl;
+    string path = "/media/Общедоступные/file6/data_v1.txt";
+    ifstream fin;
+    fin.open(path);
+    double sr;
     double n;
-    int g;
-    cin>>n;
-    cin>>g;
-    znachenie.setFunkc(n, g);
-    znachenie.getFunck();
-}
+    int i=0;
+    if (!fin.is_open()) {
+        cout<<"Файл не найден !"<<endl;
+    }else {
+            cout<<"Файл открыт"<<endl;
+            while (!fin.eof()) {
+                if (n==0) {} else {
+                    cout<<n<<endl;
+                    i++;
+                    sr +=n;
+                }
+                fin>>n;
+            }
+            sr = sr/i;
+            cout<<"Среднее арифметическое :"<<endl;
+            cout<<sr<<endl;
+            fin.close();
+        }
+        return 0;
+    }
