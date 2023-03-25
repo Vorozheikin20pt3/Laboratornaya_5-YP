@@ -1,106 +1,41 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
-template <class T>
-class Rectangle
+int main(int argc, char** argv)
 {
-private:
-    T length; //Длина
-    T height; //Высота
-    T S; //Площадь
-public:
-    Rectangle() : length(0), height(0), S(0) {}
-    Rectangle(T l, T h, T pl) : length(l), height(h), S(pl) {}
-    T RectangleLen(T l)
-    {
-        length = l;
-        return l;
-    }
-    T RectangleHei(T h)
-    {
-        height = h;
-        return h;
-    }
-    T RectanglePl(T pl)
-    {
-        pl = length * height;
-        S = pl;
-        return pl;
-    }
-    T srawn(T* a, T t, int size)
-    {
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if (a[i] > a[j]) {
-                    cout << i << "-я площадь больше " <<j<< "-ой \n";
-                }
+    int b[16][16];
+    int S;
+    cout<<"Введите систему счисления: \n";
+    cin>>S;
+    if (S==10) {
+        cout<<"Результаты работы представлены ниже. \n"<<endl;
+        for (int i=1; i<=10; i++) {
+            for (int j=1; j<=10; j++) {
+                b[i][j]=i*j;
+                cout<<setw(5)<<b[i][j]<<" ";
             }
-        }
-        return *a;
-    }
-};
-template <class T>
-T _sort(T* a, T t, int size)
-{
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            if (a[i] > a[j]) {
-                t = a[i];
-                a[i] = a[j];
-                a[j] = t;
-            }
+            cout<<endl;
         }
     }
-    return *a;
-}
-int main()
-{
-    setlocale(LC_ALL, "Russian");
-    Rectangle <int> r;
-    cout << "Сколько целых площадей хотите? \n";
-    int kolC;
-    cin >> kolC;
-    cout << "Сколько дробных площадей хотите? \n";
-    int kolD;
-    cin >> kolD;
-    int* s = new int[kolC];
-    for (int i = 0; i < kolC; ++i) {
-        int g;
-        cout << "Введите целую длину: ";
-        cin >> g;
-        r.RectangleLen(g);
-        cout << "Введите целую ширину: ";
-        cin >> g;
-        r.RectangleHei(g);
-        s[i] = r.RectanglePl(1);
-        cout << "Целочисленная площадь: " << s[i] << endl;
+    if (S==8) {
+        cout<<"Результаты работы представлены ниже. \n"<<endl;
+        for (int i=1; i<=7; i++) {
+            for (int j=1; j<=7; j++) {
+                b[i][j]=i*j;
+                cout<<setw(5)<<oct<<b[i][j]<<" ";
+            }
+            cout<<endl;
+        }
     }
-    Rectangle <double> R;
-    double* S = new double[kolD];
-    for (int i = 0; i < kolD; ++i) {
-        double g;
-        cout << "Введите дробную длину: ";
-        cin >> g;
-        R.RectangleLen(g);
-        cout << "Введите дробную ширину: ";
-        cin >> g;
-        R.RectangleHei(g);
-        S[i] = R.RectanglePl(1.0);
-        cout << "Дробная площадь: " << S[i] << endl;
+    if (S==16) {
+        cout<<"Результаты работы представлены ниже. \n"<<endl;
+        for (int i=1; i<=15; i++) {
+            for (int j=1; j<=15; j++) {
+                b[i][j]=i*j;
+                cout<<setw(5)<<hex<<b[i][j]<<" ";
+            }
+            cout<<endl;
+        }
     }
-    int t = 0;
-    double T = 0;
-    _sort(s, t, kolC);
-    _sort(S, T, kolD);
-    cout << "Целочисленные площади были отсортированы по убыванию: \n";
-    for (int i = 0; i < kolC; ++i) {
-        cout << s[i] << endl;;
-    }
-    cout << "Дробночисленные площади были отсортированы по убыванию: \n";
-    for (int i = 0; i < kolD; ++i) {
-        cout << S[i] << endl;;
-    }
-    delete[]s;
-    delete[]S;
     return 0;
 }
